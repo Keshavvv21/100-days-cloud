@@ -1,21 +1,26 @@
-## ☁️ **122 Days Cloud + DevOps Challenge (15–30 Minutes a Day)**
+# ☁️ 140 Days Cloud + DevOps + MLOps Challenge (FAANG & MLOps Ready)
 
-### 🧩 **Structure**
-
-| Phase   | Days    | Focus                                      |
-| ------- | ------- | ------------------------------------------ |
-| Phase 1 | 1–20    | Linux + Networking + Bash                  |
-| Phase 2 | 21–40   | Docker + Containers                        |
-| Phase 3 | 41–65   | Kubernetes Deep Dive                       |
-| Phase 4 | 66–80   | AWS Core Services                          |
-| Phase 5 | 81–95   | Infrastructure as Code (Terraform + CI/CD) |
-| Phase 6 | 96–105  | Go for Cloud Engineering                   |
-| Phase 7 | 106–115 | Read Scale + Observability                 |
-| Phase 8 | 116–122 | Blog Writing + Real-World Scenarios        |
+> **Duration:** 15–45 minutes daily
+> **Goal:** Master cloud, Kubernetes, DevOps, AWS, GitOps, MLOps, and observability with hands-on labs, blogs, and interview prep.
 
 ---
 
-## 🛠️ **Phase 1: Linux + Networking + Bash (Days 1–20)**
+## 🧍‍♂️ Challenge Structure
+
+| Phase   | Days    | Focus                                              |
+| ------- | ------- | -------------------------------------------------- |
+| Phase 1 | 1–20    | Linux + Networking + Bash                          |
+| Phase 2 | 21–40   | Docker + Containers + NGINX                        |
+| Phase 3 | 41–75   | Kubernetes + PVCs + Calico + Helm                  |
+| Phase 4 | 76–95   | AWS Core Services + EKS + VPC                      |
+| Phase 5 | 96–110  | Terraform, Helm, GitOps + ArgoCD                   |
+| Phase 6 | 111–125 | Observability, Scaling, Cost, Real-World Debugging |
+| Phase 7 | 126–135 | MLOps + SageMaker + ML Pipelines                   |
+| Phase 8 | 136–140 | Final Blogs + Interview Readiness                  |
+
+---
+
+## 🛠️ Phase 1: Linux + Networking + Bash (Days 1–20)
 
 | Day | Task                                                  |
 | --- | ----------------------------------------------------- |
@@ -42,163 +47,186 @@
 
 ---
 
-## 🐳 **Phase 2: Docker + Containers (Days 21–40)**
+## 🐳 Phase 2: Docker + Containers + NGINX (Days 21–40)
+
+| Day | Task                                                   |
+| --- | ------------------------------------------------------ |
+| 21  | Install Docker, Docker CLI Basics                      |
+| 22  | Build Custom Dockerfile                                |
+| 23  | Docker Daemon, Docker Systemd Unit                     |
+| 24  | Docker Volumes + Bind Mounts                           |
+| 25  | Multi-Stage Docker Builds                              |
+| 26  | Docker Networking Modes (bridge, host, none)           |
+| 27  | Docker Compose - Node + Redis Stack                    |
+| 28  | Debugging Containers: logs, exec, inspect              |
+| 29  | Alpine vs Ubuntu Base Images                           |
+| 30  | Docker Health Checks                                   |
+| 31  | Node.js App Container                                  |
+| 32  | Python Script Container                                |
+| 33  | NGINX Reverse Proxy in Docker                          |
+| 34  | Dockerize a React App + Serve via NGINX                |
+| 35  | Secure Docker Containers (user, seccomp, capabilities) |
+| 36  | Docker Secrets & BuildKit                              |
+| 37  | Docker Swarm Overview                                  |
+| 38  | CI-ready Dockerfile with Metadata Labels               |
+| 39  | Docker Registry & Image Tagging                        |
+| 40  | Blog: Docker Networking + Daemon Gotchas               |
+
+---
+
+## ☸️ Phase 3: Kubernetes + Advanced (Days 41–75)
+
+| Day | Task                                                |
+| --- | --------------------------------------------------- |
+| 41  | K8s Architecture: kubelet, etcd, controller-manager |
+| 42  | Install: Kind, Minikube or K3d                      |
+| 43  | Deploy First Pod + YAML Anatomy                     |
+| 44  | Services: ClusterIP, NodePort, LoadBalancer         |
+| 45  | Ingress Controller + NGINX + TLS                    |
+| 46  | ConfigMaps & Secrets                                |
+| 47  | Probes: Liveness, Readiness, Startup                |
+| 48  | Deployments, Rollouts, Rollbacks                    |
+| 49  | StatefulSets + Headless Service                     |
+| 50  | PV, PVC, StorageClass                               |
+| 51  | CSI Drivers: AWS EBS, Longhorn, NFS                 |
+| 52  | PVC Resize + Retain Policies                        |
+| 53  | Taints, Tolerations, Affinity                       |
+| 54  | RBAC: Roles, Bindings, SAs                          |
+| 55  | Helm Charts + Deploy Redis                          |
+| 56  | K8s Network Policies                                |
+| 57  | PodDisruptionBudget + Pod Priority                  |
+| 58  | Horizontal + Vertical Pod Autoscaler                |
+| 59  | Debug CrashLoopBackOff + OOMKilled                  |
+| 60  | Metrics Server Setup                                |
+| 61  | Canary Deployment via Argo Rollouts                 |
+| 62  | Blue-Green vs Rolling Update Strategies             |
+| 63  | Custom Resource Definitions (CRDs)                  |
+| 64  | Cluster Autoscaler or Karpenter Setup               |
+| 65  | Install Calico CNI Plugin (Policy Enforcer)         |
+| 66  | K8s Upgrade Plan + Zero Downtime Upgrade            |
+| 67  | ExternalDNS + cert-manager                          |
+| 68  | IRSA & IAM Roles for K8s on AWS                     |
+| 69  | GitOps with ArgoCD: Basics                          |
+| 70  | GitOps Sync Policy, Auto Rollback, Notifications    |
+| 71  | Multi-Tenant Cluster Design                         |
+| 72  | CSI Secret Drivers                                  |
+| 73  | Load Testing with k6/Locust                         |
+| 74  | TLS Certificates + External Secrets                 |
+| 75  | Blog: Kubernetes Networking Debug + Best Practices  |
+
+---
+
+## ☁️ Phase 4: AWS Core + EKS (Days 76–95)
 
 | Day | Task                                        |
 | --- | ------------------------------------------- |
-| 21  | Install Docker & Hello World                |
-| 22  | Build Custom Image from Dockerfile          |
-| 23  | Understand Docker Volumes                   |
-| 24  | Multi-Stage Builds                          |
-| 25  | Docker Compose: Multi-container App         |
-| 26  | Networking in Docker                        |
-| 27  | Docker Healthchecks                         |
-| 28  | Image Tagging and Publishing to DockerHub   |
-| 29  | Debugging Containers (exec, logs, inspect)  |
-| 30  | Alpine vs Ubuntu Base Images                |
-| 31  | Create a Node.js Containerized App          |
-| 32  | Containerize a Python Script                |
-| 33  | Implement Docker Swarm (intro only)         |
-| 34  | Dockerize Nginx Reverse Proxy               |
-| 35  | Create a CI/CD-ready Dockerfile             |
-| 36  | Secure Containers (rootless, non-root user) |
-| 37  | Docker Secrets                              |
-| 38  | Run Redis + Postgres with Compose           |
-| 39  | Troubleshoot Docker Volume Issues           |
-| 40  | Blog: How Docker Simplifies DevOps          |
+| 76  | IAM Users, Groups, Policies                 |
+| 77  | Launch EC2 + SSH Key                        |
+| 78  | EBS + AMI Snapshots                         |
+| 79  | S3 Lifecycle, Glacier, Versioning           |
+| 80  | Host Static Site on S3 + CloudFront         |
+| 81  | Setup RDS + Connect from EC2                |
+| 82  | Create Auto Scaling Group + Launch Template |
+| 83  | ALB + Target Group                          |
+| 84  | Deploy Lambda + API Gateway                 |
+| 85  | VPC, Subnet, Route Tables, NAT Gateway      |
+| 86  | CloudWatch Logs, Alarms, Metrics            |
+| 87  | SNS, SQS, EventBridge                       |
+| 88  | Systems Manager (SSM) & Parameter Store     |
+| 89  | EKS Cluster + Worker Nodes                  |
+| 90  | EKS + Fargate Deployment                    |
+| 91  | EKS Logging + OIDC IAM Integration          |
+| 92  | Cost Explorer, Budgets, Trusted Advisor     |
+| 93  | Backup + Disaster Recovery                  |
+| 94  | Route53 Failover + Health Checks            |
+| 95  | Blog: How I Deployed a Scalable App on AWS  |
 
 ---
 
-## ☸️ **Phase 3: Kubernetes (Days 41–65)**
+## ⚙️ Phase 5: Terraform + GitOps (Days 96–110)
+
+| Day | Task                                              |
+| --- | ------------------------------------------------- |
+| 96  | Install Terraform + Providers                     |
+| 97  | Define EC2 + S3 + IAM Terraform Modules           |
+| 98  | Remote State with S3 + DynamoDB                   |
+| 99  | Terraform Variables, Locals, Outputs              |
+| 100 | Build VPC using Modules                           |
+| 101 | Use Terragrunt for Multi-Environment Setup        |
+| 102 | Helm: Install, Template, Upgrade                  |
+| 103 | GitHub Actions: Docker Build + Push to ECR        |
+| 104 | ArgoCD Install + App Project Setup                |
+| 105 | ArgoCD with Helm Charts                           |
+| 106 | SOPS + Secrets Encryption                         |
+| 107 | ArgoCD Webhooks, Auto Rollback                    |
+| 108 | GitOps Anti-Patterns                              |
+| 109 | Interview: CI/CD Failure Scenarios                |
+| 110 | Blog: Terraform vs CloudFormation + Real Use Case |
+
+---
+
+## 📊 Phase 6: Observability + Real-World Debugging (Days 111–125)
 
 | Day | Task                                                 |
 | --- | ---------------------------------------------------- |
-| 41  | Kubernetes Architecture (kube-apiserver, etcd, etc.) |
-| 42  | Minikube Setup                                       |
-| 43  | Deploy First Pod (YAML)                              |
-| 44  | Services: ClusterIP vs NodePort                      |
-| 45  | Deployments + Rollouts                               |
-| 46  | ConfigMaps + Secrets                                 |
-| 47  | Health Probes: Liveness & Readiness                  |
-| 48  | Horizontal Pod Autoscaler                            |
-| 49  | Create a StatefulSet (e.g., MongoDB)                 |
-| 50  | PersistentVolume (PV) + PersistentVolumeClaim (PVC)  |
-| 51  | StorageClass Basics                                  |
-| 52  | Network Policies                                     |
-| 53  | Use Helm to Deploy Redis                             |
-| 54  | RBAC in Kubernetes                                   |
-| 55  | Custom Resource Definitions (CRDs)                   |
-| 56  | Pod Affinity / Taints & Tolerations                  |
-| 57  | Kube Proxy & CNI Deep Dive                           |
-| 58  | Install Metrics Server + View Resource Usage         |
-| 59  | Troubleshoot CrashLoopBackOff                        |
-| 60  | CI/CD: Auto Deploy to Minikube                       |
-| 61  | Blog: Kubernetes PVC & StatefulSets Explained        |
-| 62  | K8s Upgrade Process                                  |
-| 63  | Create & Mount EBS Volume in EKS                     |
-| 64  | PodDisruptionBudget                                  |
-| 65  | Blog: K8s Networking Gotchas                         |
+| 111 | Prometheus + Node Exporter                           |
+| 112 | kube-state-metrics + Grafana Dashboards              |
+| 113 | Loki + Promtail for Logs                             |
+| 114 | OpenTelemetry Setup + Jaeger Tracing                 |
+| 115 | AlertManager + Slack Alerts                          |
+| 116 | Horizontal & Vertical Scaling                        |
+| 117 | Aurora + RDS + DynamoDB Scaling                      |
+| 118 | CPU Throttling, OOMKilled Pod Debug                  |
+| 119 | PVC Full, Node Pressure, Eviction Issues             |
+| 120 | K8s Node Crash Sim + Draining Strategy               |
+| 121 | Cost Optimization Tips (AWS + K8s)                   |
+| 122 | Interview: Debugging PVC, DNS, CrashLoopBackOff      |
+| 123 | Resource Quotas, Limit Ranges                        |
+| 124 | Blog: Real-World Postmortem – What Broke, What Fixed |
+| 125 | Interview: Alert Fatigue, Scaling, Dashboard Design  |
 
 ---
 
-## ☁️ **Phase 4: AWS Core (Days 66–80)**
+## 🤖 Phase 7: MLOps Essentials (Days 126–135)
 
-| Day | Task                                          |
-| --- | --------------------------------------------- |
-| 66  | AWS CLI Setup + IAM Users/Roles               |
-| 67  | Launch EC2 + SSH into Instance                |
-| 68  | Understand S3: Buckets, Lifecycle Rules       |
-| 69  | S3 Static Website Hosting                     |
-| 70  | Use AWS CloudWatch Alarms                     |
-| 71  | Setup RDS + Connect via EC2                   |
-| 72  | Create an Auto Scaling Group                  |
-| 73  | Launch Load Balancer + Target Group           |
-| 74  | Deploy Lambda with API Gateway                |
-| 75  | AWS VPC Overview: Subnet, Route Tables        |
-| 76  | Create Private/Public Subnets                 |
-| 77  | NAT Gateway + Bastion Host                    |
-| 78  | AWS SNS + SQS Overview                        |
-| 79  | Use AWS CloudFormation to Launch EC2          |
-| 80  | Blog: How I Used AWS to Deploy a Scalable App |
+| Day | Task                                              |
+| --- | ------------------------------------------------- |
+| 126 | Intro to MLOps + Model Lifecycle                  |
+| 127 | Build Training Job with SageMaker SDK             |
+| 128 | Automate SageMaker Pipelines + Deploy Endpoint    |
+| 129 | Register Model + Approve/Reject Workflow          |
+| 130 | Lambda for Real-Time Inference                    |
+| 131 | Batch Transform Job                               |
+| 132 | Monitor Models for Drift & Performance            |
+| 133 | MLFlow for Experiment Tracking + Metadata         |
+| 134 | KServe Inference with Ingress Routing             |
+| 135 | Blog: End-to-End MLOps on AWS with GitHub Actions |
 
 ---
 
-## ⚙️ **Phase 5: Infrastructure as Code + CI/CD (Days 81–95)**
+## ✍️ Phase 8: Final Blogs + Interview Readiness (Days 136–140)
 
-| Day | Task                                     |
-| --- | ---------------------------------------- |
-| 81  | Install Terraform + HCL Syntax           |
-| 82  | Terraform AWS EC2 Resource               |
-| 83  | Manage S3 with Terraform                 |
-| 84  | Terraform Variables & Outputs            |
-| 85  | Create VPC with Terraform                |
-| 86  | Terraform Remote Backend (S3 + DynamoDB) |
-| 87  | Use Terragrunt for Environments          |
-| 88  | Setup GitHub Actions for Docker Build    |
-| 89  | CI/CD with GitHub → DockerHub → EC2      |
-| 90  | Build a Terraform Module                 |
-| 91  | Terraform with EKS                       |
-| 92  | CI Pipeline for Helm Charts              |
-| 93  | Secure Terraform Secrets                 |
-| 94  | ArgoCD Setup with Kubernetes             |
-| 95  | Blog: Terraform vs CloudFormation        |
-
----
-
-## 🐹 **Phase 6: Go for Cloud Engineers (Days 96–105)**
-
-| Day | Task                                           |
-| --- | ---------------------------------------------- |
-| 96  | Hello World + Go Modules                       |
-| 97  | Build HTTP Server in Go                        |
-| 98  | JSON Encode/Decode API                         |
-| 99  | Connect to Redis with Go                       |
-| 100 | Use Go to Interact with AWS SDK                |
-| 101 | Goroutines + Channels                          |
-| 102 | Create CLI Tool in Go                          |
-| 103 | Implement Custom Logger                        |
-| 104 | Containerize Go App                            |
-| 105 | Blog: Why Go is Great for Cloud Infrastructure |
-
----
-
-## 🧪 **Phase 7: Read Scale + Observability (Days 106–115)**
-
-| Day | Task                                      |
-| --- | ----------------------------------------- |
-| 106 | Difference: Read Scaling vs Write Scaling |
-| 107 | Read Replicas with PostgreSQL             |
-| 108 | DNS Load Balancing + Route53              |
-| 109 | Prometheus Setup + Exporters              |
-| 110 | Grafana Dashboards                        |
-| 111 | Logs: ELK vs Loki Stack                   |
-| 112 | OpenTelemetry Tracing Basics              |
-| 113 | Alerting with AlertManager                |
-| 114 | Simulate Scale Test with Locust           |
-| 115 | Blog: Read-Scale Issues I Faced and Fixed |
-
----
-
-## ✍️ **Phase 8: Blogging + Real World (Days 116–122)**
-
-| Day | Task                                             |
-| --- | ------------------------------------------------ |
-| 116 | Write: “How I Built a Scalable Dockerized App”   |
-| 117 | Blog: CI/CD in Kubernetes with ArgoCD            |
-| 118 | Write: From Terraform Plan to Production         |
-| 119 | Blog: Storage Classes in Kubernetes              |
-| 120 | Real World: Reproduce K8s Node Crash and Recover |
-| 121 | Real World: Container Disk Fill Issue            |
-| 122 | Final Blog: My 122-Day Cloud Journey 🚀          |
+| Day | Task                                                        |
+| --- | ----------------------------------------------------------- |
+| 136 | Mock Interview: Infra Design (Multi-AZ, Auto-Scale, GitOps) |
+| 137 | Mock Interview: Canary Rollouts, Logs, Metrics              |
+| 138 | Final Blog: How This 140-Day Challenge Transformed Me       |
+| 139 | Portfolio Upload: GitHub, Dev.to, Medium                    |
+| 140 | Celebrate & Share Your Journey 🚀                           |
 
 ---
 
 ## 📚 Resources
 
-* Kubernetes Docs: [https://kubernetes.io/docs](https://kubernetes.io/docs)
-* AWS Docs: [https://docs.aws.amazon.com](https://docs.aws.amazon.com)
-* Terraform: [https://developer.hashicorp.com/terraform](https://developer.hashicorp.com/terraform)
-* Docker: [https://docs.docker.com](https://docs.docker.com)
-* Prometheus & Grafana: [https://prometheus.io](https://prometheus.io)
-* Go: [https://go.dev/doc](https://go.dev/doc)
+* [Kubernetes Docs](https://kubernetes.io/docs)
+* [AWS Docs](https://docs.aws.amazon.com)
+* [Terraform Docs](https://developer.hashicorp.com/terraform)
+* [ArgoCD](https://argo-cd.readthedocs.io)
+* [Longhorn](https://longhorn.io)
+* [Calico](https://projectcalico.docs.tigera.io)
+* [k6 Load Testing](https://k6.io)
+* [SageMaker](https://docs.aws.amazon.com/sagemaker)
+* [MLflow](https://mlflow.org)
+
+---
 
