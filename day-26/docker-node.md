@@ -1,6 +1,4 @@
-Here is a README.md explaining Docker Networking Modes (bridge, host, none), with relevant links included for further reference:
 
-```markdown
 # Docker Networking Modes
 
 Docker containers can connect to networks in different ways depending on the networking mode used. The three common Docker networking modes are **bridge**, **host**, and **none**. Each mode controls how containers communicate with each other, the host system, and the outside world.
