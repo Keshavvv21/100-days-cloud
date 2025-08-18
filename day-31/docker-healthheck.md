@@ -1,4 +1,4 @@
-# Docker Health Checks README
+# Docker Health Checks
 
 ## Overview
 
