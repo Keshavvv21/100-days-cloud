@@ -69,7 +69,9 @@
 | 36  | Docker Secrets & BuildKit                              |
 | 37  | Docker Swarm Overview                                  |
 | 38  | CI-ready Dockerfile with Metadata Labels               |
-| 39  | Docker Registry & Image Tagging                        |
+| 39  | Docker Registry & Image Tagging  
+        add why sodu su is requireed 
+        for accessing and creating images                      |
 | 40  | Blog: Docker Networking + Daemon Gotchas               |
 
 ---
