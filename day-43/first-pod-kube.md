@@ -9,16 +9,15 @@ The first step in learning Kubernetes is **deploying a Pod** – the smallest de
 
 ## 🔹 Kubernetes Architecture (Block Diagram)
 
-```mermaid
 flowchart TD
-    A[User / kubectl] --> B[API Server]
-    B --> C[etcd (Cluster State DB)]
-    B --> D[Controller Manager]
-    B --> E[Scheduler]
-    E --> F[Kubelet (on Worker Node)]
-    F --> G[Pod: Containers + Volumes]
-    F --> H[Kube Proxy]
-```
+    A["User / kubectl"] --> B["API Server"]
+    B --> C["etcd (Cluster State DB)"]
+    B --> D["Controller Manager"]
+    B --> E["Scheduler"]
+    E --> F["Kubelet (on Worker Node)"]
+    F --> G["Pod: Containers + Volumes"]
+    F --> H["Kube Proxy"]
+
 
 * **API Server** – Entry point for kubectl & REST requests.
 * **etcd** – Stores cluster state.
