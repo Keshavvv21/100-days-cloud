@@ -1,8 +1,3 @@
-Got it 🚀 — here’s the **entire `README.md`** with corrected **Mermaid diagrams** that will render properly in GitHub, covering **Kubernetes + Ingress Controller + NGINX + TLS** in detail.
-
----
-
-````markdown
 # 🚀 Kubernetes Ingress Controller with NGINX + TLS
 
 This guide explains how to set up an **Ingress Controller** in Kubernetes using **NGINX**, and secure your applications with **TLS (HTTPS)**.
