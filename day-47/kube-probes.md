@@ -192,20 +192,21 @@ With `startupProbe` defined, liveness/readiness are disabled until the startup p
 
 ## 6. Probe lifecycle diagram (Mermaid)
 
+## 6. Probe lifecycle diagram (Mermaid)
+
 ```mermaid
 flowchart TD
   A[Container starts] --> B{StartupProbe defined?}
   B -->|Yes| C[Run StartupProbe]
   B -->|No| D[Run Liveness & Readiness]
   C -->|Startup success| D
-  C -->|Startup failure (threshold)| E[Container restart]
+  C -->|Startup failure threshold| E[Container restart]
   D --> F{Readiness success?}
   F -->|Yes| G[Pod in Service endpoints]
   F -->|No| H[Pod removed from Service]
   D --> I{Liveness success?}
   I -->|No| E
   I -->|Yes| D
-```
 
 ## 7. Debugging & Troubleshooting
 
