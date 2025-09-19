@@ -86,7 +86,6 @@ livenessProbe:
 ### TCP Socket probe (checks port open)
 
 ```yaml
-type: kubernetes.io/tcp-socket
 readinessProbe:
   tcpSocket:
     port: 6379
@@ -196,16 +195,16 @@ With `startupProbe` defined, liveness/readiness are disabled until the startup p
 ```mermaid
 flowchart TD
   A[Container starts] --> B{StartupProbe defined?}
-  B -- Yes --> C[Run StartupProbe]
-  B -- No --> D[Run Liveness & Readiness]
+  B -->|Yes| C[Run StartupProbe]
+  B -->|No| D[Run Liveness & Readiness]
   C -->|Startup success| D
   C -->|Startup failure (threshold)| E[Container restart]
   D --> F{Readiness success?}
-  F -- Yes --> G[Pod in Service endpoints]
-  F -- No --> H[Pod removed from Service]
+  F -->|Yes| G[Pod in Service endpoints]
+  F -->|No| H[Pod removed from Service]
   D --> I{Liveness success?}
-  I -- No --> E
-  I -- Yes --> D
+  I -->|No| E
+  I -->|Yes| D
 ```
 
 ## 7. Debugging & Troubleshooting
@@ -289,4 +288,4 @@ async def ready():
 
 ---
 
-
+*End of document.*
