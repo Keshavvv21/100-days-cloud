@@ -207,6 +207,7 @@ flowchart TD
   D --> I{Liveness success?}
   I -->|No| E
   I -->|Yes| D
+```
 
 ## 7. Debugging & Troubleshooting
 
