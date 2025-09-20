@@ -84,9 +84,10 @@ spec:
 
 ## 📊 How It Works (Diagram)
 
+
 ```mermaid
 flowchart TD
-    U[Client] -->|DNS Lookup| HS[Headless Service (ClusterIP=None)]
+    U[Client] -->|DNS Lookup| HS[Headless Service - ClusterIP None]
     HS --> P0[pod-0.mysql.default.svc]
     HS --> P1[pod-1.mysql.default.svc]
     HS --> P2[pod-2.mysql.default.svc]
@@ -95,7 +96,7 @@ flowchart TD
     style P0 fill:#bbf,stroke:#333
     style P1 fill:#bbf,stroke:#333
     style P2 fill:#bbf,stroke:#333
-```
+
 
 * Clients use the **Headless Service** for DNS.
 * Each Pod gets a **stable DNS record** (`pod-x.service.namespace.svc`).
