@@ -96,6 +96,7 @@ flowchart TD
     style P0 fill:#bbf,stroke:#333
     style P1 fill:#bbf,stroke:#333
     style P2 fill:#bbf,stroke:#333
+```
 
 
 * Clients use the **Headless Service** for DNS.
