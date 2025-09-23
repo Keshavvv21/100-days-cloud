@@ -61,7 +61,7 @@ volumeBindingMode: WaitForFirstConsumer
 
 ```mermaid
 flowchart TD
-    Pod --> PVC --> PV --> "Longhorn CSI Driver" --> "Longhorn Distributed Storage"
+    Pod --> PVC --> PV --> Longhorn_CSI[Longhorn CSI Driver] --> Longhorn_Storage[Longhorn Distributed Storage]
 ```
 
 ### Install
@@ -88,7 +88,7 @@ allowVolumeExpansion: true
 
 ```mermaid
 flowchart TD
-    Pod --> PVC --> PV --> "NFS CSI Driver" --> "NFS Server"
+    Pod --> PVC --> PV --> NFS_CSI[NFS CSI Driver] --> NFS_Server[NFS Server]
 ```
 
 ### Install
