@@ -33,7 +33,9 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    Pod --> PVC --> PV --> "AWS EBS CSI Driver" --> "AWS Elastic Block Store"
+    Pod --> PVC --> PV --> EBS_CSI_Driver --> AWS_EBS
+    EBS_CSI_Driver[AW S EBS CSI Driver]
+    AWS_EBS[AWS Elastic Block Store]
 ```
 
 ### Install
