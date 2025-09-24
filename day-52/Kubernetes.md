@@ -100,10 +100,9 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[User Deletes PVC] --> B[Check PV Reclaim Policy]
-
     B -->|Retain| C[PV Stays Bound, Needs Manual Reclaim]
     B -->|Delete| D[PV + Underlying Storage Deleted]
-    B -->|Recycle (Deprecated)| E[PV Data Wiped & Reused]
+    B -->|Recycle| E[Recycle - Deprecated, PV Data Wiped & Reused]
 ```
 
 ---
