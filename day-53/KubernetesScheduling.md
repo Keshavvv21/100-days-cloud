@@ -129,12 +129,26 @@ spec:
 
 ## 🖼️ Flow Diagrams
 
+Ah, I see the issue 🙏
+GitHub's Mermaid renderer is **picky about emojis and special characters** inside the node labels (`[ ... ]`).
+That’s why it failed when I used ❌ and ✅, and also with parentheses inside labels.
+
+Let me fix the diagrams so they **render correctly on GitHub**.
+
+---
+
+## ✅ Fixed Mermaid Diagrams
+
 ### 🔹 Taints & Tolerations
 
 ```mermaid
 flowchart TD
-    A[Node with taint: key=value:NoSchedule] -->|Pod-A (No toleration)| B[❌ Cannot Schedule]
-    A -->|Pod-B (Has toleration)| C[✅ Schedules Successfully]
+    A[Node with taint: key=value:NoSchedule]
+    B[Pod-A without toleration - Cannot Schedule]
+    C[Pod-B with toleration - Schedules Successfully]
+
+    A --> B
+    A --> C
 ```
 
 ---
@@ -143,8 +157,12 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Pod requires disktype=ssd] -->|Match| B[Node1: disktype=ssd ✅]
-    A -->|No Match| C[Node2: disktype=hdd ❌]
+    A[Pod requires disktype=ssd]
+    B[Node1 labeled disktype=ssd - Match]
+    C[Node2 labeled disktype=hdd - No Match]
+
+    A --> B
+    A --> C
 ```
 
 ---
@@ -153,7 +171,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Pod with affinity: wants app=frontend] -->|Placed with| B[Pod (label: app=frontend)]
+    A[Pod with affinity: wants app=frontend]
+    B[Pod with label app=frontend]
+
+    A --> B
 ```
 
 ---
@@ -162,9 +183,15 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Pod with anti-affinity: avoid app=frontend] -->|Avoids| B[Node with frontend Pod ❌]
-    A -->|Placed on| C[Node without frontend Pod ✅]
+    A[Pod with anti-affinity: avoid app=frontend]
+    B[Node with frontend Pod - Avoid]
+    C[Node without frontend Pod - Place Here]
+
+    A --> B
+    A --> C
 ```
+
+
 
 ---
 
