@@ -46,8 +46,8 @@ It defines **permissions** using:
 flowchart TD
     A[User / Pod / ServiceAccount] --> B[RoleBinding / ClusterRoleBinding]
     B --> C[Role / ClusterRole]
-    C --> D[Permissions (verbs: get, list, create, delete)]
-    D --> E[Resources (pods, secrets, configmaps, etc.)]
+    C --> D[Permissions <br/> (verbs: get • list • create • delete)]
+    D --> E[Resources <br/> (pods • secrets • configmaps)]
 ```
 
 ---
