@@ -42,15 +42,16 @@ It defines **permissions** using:
 
 ## 🔁 RBAC Flow Diagram
 
+
 ```mermaid
 flowchart TD
-    A[User / Pod / ServiceAccount] --> B[RoleBinding / ClusterRoleBinding]
-    B --> C[Role / ClusterRole]
-    C --> D[Permissions <br/> (verbs: get • list • create • delete)]
-    D --> E[Resources <br/> (pods • secrets • configmaps)]
+    A[User or Pod or ServiceAccount] --> B[RoleBinding or ClusterRoleBinding]
+    B --> C[Role or ClusterRole]
+    C --> D[Permissions: get list create delete]
+    D --> E[Resources: pods secrets configmaps]
 ```
 
----
+
 
 ## 📄 Example YAML Snippet
 
