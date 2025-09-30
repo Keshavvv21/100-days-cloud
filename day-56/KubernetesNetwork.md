@@ -43,14 +43,20 @@ spec:
 ## 🔄 Flowchart: How Network Policies Work
 
 ```mermaid
-flowchart TD
-    A[Pod Created] --> B{Any NetworkPolicy Exists?}
-    B -- No --> C[All traffic allowed]
-    B -- Yes --> D{Pod matches podSelector?}
-    D -- No --> C
-    D -- Yes --> E{Ingress/Egress rules defined?}
-    E -- Yes --> F[Allow/Deny as per rules]
-    E -- No --> G[Default Deny]
+graph LR
+    subgraph Frontend_Namespace
+        F1[Pod: frontend-1]
+        F2[Pod: frontend-2]
+    end
+
+    subgraph Default_Namespace
+        N1[Pod: nginx]
+        DB[(Database)]
+    end
+
+    F1 -->|Allowed| N1
+    F2 -->|Allowed| N1
+    DB -.->|Blocked| N1
 ```
 
 ---
