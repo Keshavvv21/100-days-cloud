@@ -77,7 +77,7 @@ graph LR
 
     F1 -->|Allowed| N1
     F2 -->|Allowed| N1
-    DB -.x.->|Blocked| N1
+    DB -->|Blocked| N1
 ```
 
 ---
