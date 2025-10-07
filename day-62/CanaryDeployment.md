@@ -80,31 +80,39 @@ If monitoring tools (e.g., Prometheus) confirm healthy metrics, rollout progress
 
 ```mermaid
 flowchart TB
-    subgraph Dev["👩‍💻 Developer"]
-        A1[Code Change (v2)]
-        A2[Push to Git Repo]
+    %% --- Developer Stage ---
+    subgraph Dev["Developer"]
+        A1["Code Change (v2)"]
+        A2["Push to Git Repository"]
     end
 
-    subgraph CI_CD["⚙️ CI/CD + GitOps Pipeline"]
-        H1[Helm Chart Packaging]
-        H2[Argo CD Syncs Chart]
+    %% --- CI/CD Stage ---
+    subgraph CI_CD["CI/CD and GitOps Pipeline"]
+        H1["Helm Chart Packaging"]
+        H2["Argo CD Syncs Chart"]
     end
 
-    subgraph K8s["☸️ Kubernetes Cluster"]
-        R1[Argo Rollouts Controller]
-        RS1[ReplicaSet v1 (Stable)]
-        RS2[ReplicaSet v2 (Canary)]
-        M1[Prometheus Metrics]
-        I1[Ingress / Istio Gateway]
+    %% --- Kubernetes Stage ---
+    subgraph K8s["Kubernetes Cluster"]
+        R1["Argo Rollouts Controller"]
+        RS1["ReplicaSet v1 (Stable)"]
+        RS2["ReplicaSet v2 (Canary)"]
+        M1["Prometheus Metrics"]
+        I1["Ingress / Istio Gateway"]
     end
 
-    A1 --> A2 --> H1 --> H2 --> R1
+    %% --- Connections ---
+    A1 --> A2
+    A2 --> H1
+    H1 --> H2
+    H2 --> R1
     R1 --> RS1
     R1 --> RS2
-    I1 -->|Traffic Split| RS1
-    I1 -->|Traffic Split| RS2
+    I1 -->|Traffic to Stable| RS1
+    I1 -->|Traffic to Canary| RS2
     R1 -->|Monitor| M1
     M1 -->|Metric Feedback| R1
+
 
 ```
 
