@@ -99,10 +99,13 @@ flowchart TB
     end
 
     A1 --> A2 --> H1 --> H2 --> R1
-    R1 --> RS1 & RS2
-    I1 -->|Traffic Split| RS1 & RS2
+    R1 --> RS1
+    R1 --> RS2
+    I1 -->|Traffic Split| RS1
+    I1 -->|Traffic Split| RS2
     R1 -->|Monitor| M1
     M1 -->|Metric Feedback| R1
+
 ```
 
 ---
