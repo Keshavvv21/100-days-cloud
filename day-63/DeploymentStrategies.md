@@ -36,26 +36,26 @@ Two separate environments (deployments) run concurrently — e.g. `app-blue` (cu
 
 ```mermaid
 flowchart TB
-  A[User triggers new image / manifest] --> B[Deployment controller sees new ReplicaSet]
-  B --> C[Create new Pods (up to maxSurge)]
-  C --> D[New Pods pass readinessProbe?]
-  D -- yes --> E[Traffic routed to new Pods; old Pods terminated (respect maxUnavailable)]
-  D -- no --> F[Wait or pause rollout; mark failing]
-  E --> G[Rollout finishes -> new ReplicaSet becomes active]
-  F --> H[Rollback or fix and re-apply]
+  A["User triggers new image or manifest"] --> B["Deployment controller creates new ReplicaSet"]
+  B --> C["Create new Pods — up to maxSurge limit"]
+  C --> D{"New Pods pass readinessProbe?"}
+  D -- yes --> E["Route traffic to new Pods; terminate old Pods (respect maxUnavailable)"]
+  D -- no --> F["Wait or pause rollout; mark failing"]
+  E --> G["Rollout finishes — new ReplicaSet becomes active"]
+  F --> H["Rollback or fix and re-apply"]
 ```
 
 ### Blue-Green — Flowchart (Mermaid)
 
 ```mermaid
 flowchart TB
-  A[User triggers new image / green manifest] --> B[Create app-green Deployment & ReplicaSet]
-  B --> C[app-green pods start and pass readinessProbe?]
-  C -- yes --> D[Run tests / smoke tests against app-green (staging endpoint)]
-  D -- success --> E[Switch Service selector from blue -> green (atomic)]
-  E --> F[Traffic now to app-green; app-blue retained as backup]
-  D -- fail --> G[Destroy app-green or fix & redeploy]
-  F --> H[If issue -> switch selector back to blue (rollback)]
+  A["User triggers new image or green manifest"] --> B["Create app-green Deployment and ReplicaSet"]
+  B --> C["app-green Pods start and pass readinessProbe?"]
+  C -- yes --> D["Run smoke tests against app-green (staging endpoint)"]
+  D -- success --> E["Switch Service selector from blue → green (atomic switch)"]
+  E --> F["Traffic now goes to app-green; app-blue retained as backup"]
+  D -- fail --> G["Destroy app-green or fix and redeploy"]
+  F --> H["If issue, switch selector back to blue (rollback)"]
 ```
 
 ### Component architecture (text)
