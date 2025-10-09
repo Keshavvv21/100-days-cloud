@@ -117,9 +117,9 @@ kubectl describe database mydb
 
 ```mermaid
 flowchart LR
-    A[User] -->|kubectl apply| B[Custom Resource Definition (CRD)]
+    A[User] -->|kubectl apply| B[Custom Resource Definition - CRD]
     B --> C[Kubernetes API Server]
-    C --> D[Custom Resource (CR) Instances]
+    C --> D[Custom Resource - CR Instances]
     D --> E[Controller / Operator]
     E --> F[Underlying Infrastructure]
     F --> G[Status Updates]
