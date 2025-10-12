@@ -1,164 +1,374 @@
+# Kubernetes Upgrade Plan — Zero Downtime
 
+## Goals
 
-## 📘 Intraday Trading Rules (India)
-
-### 🏦 Overview
-
-**Intraday trading** means buying and selling the same stock or derivative **within the same trading day**, before market close.
-Positions are not carried overnight. Profit or loss is based on price movement during the day.
-
----
-
-### ⏰ Market Timings (NSE / BSE)
-
-| Session         | Time (IST)        | Description                |
-| --------------- | ----------------- | -------------------------- |
-| Pre-open        | 9:00 AM – 9:15 AM | Order matching & discovery |
-| Regular Trading | 9:15 AM – 3:30 PM | Main intraday session      |
-| Post-close      | 3:40 PM – 4:00 PM | Closing price session      |
-
-> ⚠️ All **intraday positions must be squared off by 3:20 PM** (varies by broker).
+* Upgrade Kubernetes version (control plane + kubelets) with **zero or minimal downtime**.
+* Ensure workloads remain available using Kubernetes primitives (PodDisruptionBudget, readiness probes, rolling updates).
+* Provide step-by-step commands, YAML examples, and rollback strategy (etcd snapshot + Git rollback + `kubectl rollout undo`).
 
 ---
 
-### 💹 Basic Rules
+## High-level architecture flow (Mermaid)
 
-1. **Buy & Sell Same Day**
-
-   * You must **exit the position (square off)** on the same day before market close.
-   * Example:
-     Buy 100 shares of TCS @ ₹3800 at 10:00 AM → Sell at 3:00 PM @ ₹3820 → ₹2000 profit.
-
-2. **Auto Square-off by Broker**
-
-   * If you don’t exit before cutoff, your broker **automatically squares off**.
-   * Broker may charge **auto square-off fees** (₹20–₹50 per order).
-
-3. **Margins & Leverage**
-
-   * Brokers offer **5x–20x leverage** for intraday (depends on stock & SEBI rules).
-   * SEBI rules (2021) limit maximum **intraday margin to 5x (20%)** of trade value.
-
-4. **No Overnight Holding**
-
-   * Intraday positions cannot be converted to delivery after market hours.
-   * If you want to hold, **convert to CNC (Cash & Carry)** before cutoff.
-
-5. **Order Type Must Be MIS or CO**
-
-   * Intraday trades are placed using:
-
-     * **MIS (Margin Intraday Square-off)** or
-     * **CO (Cover Order)** or **BO (Bracket Order)**.
-
----
-
-### ⚖️ SEBI Regulations
-
-| Rule                         | Description                                                               |
-| ---------------------------- | ------------------------------------------------------------------------- |
-| **Margin Rules**             | Minimum 20% upfront margin on trade value required.                       |
-| **Peak Margin Reporting**    | Brokers report your highest margin use during the day.                    |
-| **No Excess Leverage**       | Max 5x leverage allowed (as per SEBI circular).                           |
-| **Penalty for Short Margin** | If margin < required, penalty of 0.5–1% of shortfall.                     |
-| **Client Segregation**       | Funds & securities must be held in your name, not broker pooled accounts. |
-
----
-
-### 💰 Example – Margin Use
-
-| Stock     | Price | Quantity | Trade Value | Required Margin (20%) | Possible Leverage |
-| --------- | ----- | -------- | ----------- | --------------------- | ----------------- |
-| HDFC Bank | ₹1600 | 100      | ₹1,60,000   | ₹32,000               | 5x                |
-
----
-
-### 🚫 Intraday Restrictions
-
-1. **Stock Circuit Limits**
-
-   * Some stocks have upper/lower circuit limits (e.g., ±5%, ±10%, ±20%).
-   * You can’t sell once a stock hits an upper/lower circuit.
-
-2. **T2T (Trade-to-Trade) Stocks**
-
-   * No intraday allowed; only delivery (CNC) permitted.
-
-3. **Penny Stocks / Illiquid Stocks**
-
-   * Avoid trading low-volume, high-volatility stocks.
-
-4. **BTST (Buy Today, Sell Tomorrow)**
-
-   * Not considered intraday; settlement risk applies.
-
----
-
-### 📊 Taxes & Charges
-
-| Type                                 | Description                             |
-| ------------------------------------ | --------------------------------------- |
-| **Brokerage**                        | Usually ₹20 per executed order (flat).  |
-| **STT (Securities Transaction Tax)** | 0.025% on sell side.                    |
-| **Exchange Transaction Charges**     | NSE: 0.00325% approx.                   |
-| **GST**                              | 18% on brokerage + transaction charges. |
-| **SEBI Turnover Fees**               | 0.0001% of turnover.                    |
-| **Stamp Duty**                       | 0.003% on buy side (varies by state).   |
-
-💡 Example:
-If your turnover = ₹5,00,000 → total cost ≈ ₹80–₹120.
-
----
-
-### 🧠 Best Practices
-
-* Set **Stop-Loss (SL)** on every trade.
-* Risk only **1–2%** of your capital per trade.
-* Avoid trading in first 5–10 mins (high volatility).
-* Check **volume & trend** before entry.
-* Never average a losing trade.
-* Maintain a **trading journal** to track performance.
-* Avoid **revenge trading** after losses.
-
----
-
-### ⚙️ Useful Broker Terms
-
-| Term        | Meaning                                           |
-| ----------- | ------------------------------------------------- |
-| **MIS**     | Margin Intraday Square-off (auto exit same day)   |
-| **CNC**     | Cash & Carry (delivery)                           |
-| **CO / BO** | Cover or Bracket Orders for automated SL & Target |
-| **MTM**     | Mark to Market – real-time profit/loss            |
-| **P&L**     | Profit & Loss summary                             |
-
----
-
-### 🧾 Example Trade Flow
-
-```text
-→ You buy Infosys 50 shares @ ₹1550 = ₹77,500 value
-→ Using 5x leverage, margin = ₹15,500 only
-→ Sell later @ ₹1562 → ₹600 profit
-→ After brokerage, taxes, and fees → ₹500 net gain
+```mermaid
+flowchart LR
+  A[Prepare & Backup] --> B[Upgrade Control Plane Master-1]
+  B --> C[Validate Control Plane]
+  C --> D[Upgrade other Control Plane nodes]
+  D --> E[Drain & Upgrade Worker Node (1..N)]
+  E --> F[Upgrade kubelet & kube-proxy on Node]
+  F --> G[Uncordon Node]
+  G --> H[Validate Workloads]
+  H --> I[Post-upgrade Health Checks & Cleanup]
 ```
 
 ---
 
-### ⚖️ Disclaimer
+## Prerequisites & Safety
 
-This document is for **educational purposes** only.
-Trading involves market risk; past performance is not indicative of future results.
-Always trade as per your **risk tolerance** and **SEBI regulations**.
+* **Back up etcd** (snapshot) *before any control-plane change*.
+* Ensure `kubectl` points to the expected cluster (`kubectl config current-context`).
+* Ensure control plane nodes & workers have SSH access and package repos configured.
+* Check compatibility matrix of kubeadm/kubelet/kubectl with the new Kubernetes version.
+* Test upgrade in staging cluster identical to production.
+* Communicate scheduled window to stakeholders.
 
 ---
 
-### 📚 References
+## Backup (etcd) — critical
 
-* [SEBI Circular on Peak Margin Rules (2021)](https://www.sebi.gov.in/)
-* [NSE India – Market Timings](https://www.nseindia.com/)
-* [BSE India – Trader Guidelines](https://www.bseindia.com/)
-* [Zerodha Varsity – Intraday Trading Module](https://zerodha.com/varsity/)
+If using static pod etcd (kubeadm default):
+
+```bash
+# on a control-plane node
+ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd-snapshot-$(date +%F-%T).db \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/peer.crt \
+  --key=/etc/kubernetes/pki/etcd/peer.key
+
+# copy snapshot to safe storage
+scp /tmp/etcd-snapshot-*.db backup-server:/backups/etcd/
+```
+
+If using managed etcd (EKS/GKE), use cloud provider snapshot mechanisms.
+
+---
+
+## Prepare Cluster for Zero Downtime
+
+1. Ensure Deployments use `RollingUpdate` strategy and have **readiness probes**.
+2. Add **PodDisruptionBudgets (PDB)** for critical apps.
+3. Ensure DaemonSets set `updateStrategy: RollingUpdate` if they are safe to roll.
+4. Ensure **vertical/horizontal pod autoscaling** is tuned and not triggered unexpectedly.
+
+### Sample PodDisruptionBudget
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: webapp-pdb
+spec:
+  minAvailable: 80%
+  selector:
+    matchLabels:
+      app: webapp
+```
+
+### Sample Deployment (readiness + liveness + rolling update)
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 6
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: myregistry/webapp:1.2.3
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+```
+
+---
+
+## Control Plane (kubeadm) Upgrade — Typical flow (HA and single master)
+
+> **Important**: If your cluster is managed (EKS/GKE/AKS), follow provider-specific upgrade path.
+
+1. **Check current versions**
+
+```bash
+kubectl version --short
+kubeadm version
+```
+
+2. **Plan target version** — pick the next stable minor release (e.g., 1.24 → 1.25). Verify compatibility.
+
+3. **Upgrade kubeadm binary on the first control-plane node**
+
+```bash
+# Debian/Ubuntu example
+sudo apt-get update
+sudo apt-get install -y kubeadm=<target-version>-00
+```
+
+4. **Run kubeadm upgrade plan**
+
+```bash
+sudo kubeadm upgrade plan
+```
+
+5. **Apply control-plane upgrade on the first master**
+
+```bash
+sudo kubeadm upgrade apply v1.25.3 --control-plane --yes
+```
+
+6. **Upgrade kubelet & kubectl on that control-plane node**
+
+```bash
+sudo apt-get install -y kubelet=<target-version>-00 kubectl=<target-version>-00
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+```
+
+7. **Repeat for other control-plane nodes**
+
+* SSH into each remaining control-plane node and upgrade `kubeadm` → run `kubeadm upgrade node` or follow the kubeadm instructions for HA.
+
+8. **Verify control plane health**
+
+```bash
+kubectl get nodes
+kubectl get cs
+kubectl get pods -n kube-system
+```
+
+---
+
+## Worker Node Upgrade — Zero Downtime Pattern
+
+For each worker node (one at a time):
+
+1. **Cordon node**
+
+```bash
+kubectl cordon <node>
+```
+
+2. **Drain node (respecting daemonsets and local data)**
+
+```bash
+kubectl drain <node> --ignore-daemonsets --delete-local-data --grace-period=60 --timeout=10m
+```
+
+*Notes:*
+
+* `--ignore-daemonsets` so DaemonSet pods remain.
+* `--delete-local-data` only if safe. If not safe, migrate local-data first.
+* tune `--grace-period` to let pods terminate gracefully.
+
+3. **Upgrade kubeadm, kubelet & kubectl on the worker**
+
+```bash
+# upgrade packages
+sudo apt-get update
+sudo apt-get install -y kubeadm=<target-version>-00
+sudo kubeadm upgrade node
+sudo apt-get install -y kubelet=<target-version>-00 kubectl=<target-version>-00
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+```
+
+Alternatively, on some systems you only need `kubeadm config migrate` and update system packages.
+
+4. **Uncordon node**
+
+```bash
+kubectl uncordon <node>
+```
+
+5. **Validate node & workloads**
+
+```bash
+kubectl get nodes
+kubectl get pods -o wide --field-selector spec.nodeName=<node>
+kubectl describe node <node>
+```
+
+Repeat for all worker nodes **one at a time**.
+
+---
+
+## Kube-Proxy & CNI
+
+* Upgrade `kube-proxy` DaemonSet to the new image matching the cluster version if required.
+* Upgrade CNI plugins (calico/weave/flannel) as per vendor instructions — usually by applying manifest updates and rolling DaemonSet pods.
+
+Example upgrade for kube-proxy (kubeadm-managed):
+
+```bash
+kubectl -n kube-system set image ds/kube-proxy kube-proxy=k8s.gcr.io/kube-proxy:v1.25.3
+```
+
+---
+
+## Zero-Downtime Best Practices (summary)
+
+* Use **PodDisruptionBudgets** to limit simultaneous evictions.
+* Keep `maxUnavailable` low (1) and `maxSurge` >= 1 for Deployments.
+* Have **readiness probes** so traffic routes only to healthy pods.
+* Use **multiple worker nodes** across AZs/racks for redundancy.
+* Upgrade workers serially, not in parallel.
+* Use **canary** Deployments for critical system components.
+
+---
+
+## Rollback Strategy
+
+1. **If control plane upgrade fails**: restore etcd snapshot (advanced — follow `etcdctl snapshot restore` flow, adjusting static pod manifests and certs). Test restore on a separate cluster before production restore.
+
+2. **If application update / deployment fails**: use `kubectl rollout undo`:
+
+```bash
+kubectl rollout undo deployment/my-deploy -n my-ns
+```
+
+3. **Git rollback** ("unclone"):
+
+```bash
+# clone repo
+git clone git@github.com:org/repo.git
+cd repo
+# tag current production commit
+git tag prod-before-upgrade
+# if you need to revert changes pushed earlier
+git revert <commit-hash>    # creates a new commit that undoes changes
+# or reset to tag (force push to branch if necessary)
+git reset --hard prod-before-upgrade
+git push --force origin main
+```
+
+> "Unclone" is not a standard Git op — to undo, you revert, reset, or check out a prior tag/commit and push the corrected state.
+
+---
+
+## Example kubeadm-config (partial)
+
+```yaml
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+kubernetesVersion: v1.25.3
+controlPlaneEndpoint: "lb.example.com:6443"
+networking:
+  podSubnet: "10.244.0.0/16"
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "iptables"
+```
+
+Use `kubeadm upgrade apply --config kubeadm-config.yaml` to apply when needed.
+
+---
+
+## Useful commands checklist (compact)
+
+```bash
+# pre-upgrade
+kubectl version --short
+kubectl get nodes -o wide
+kubectl get pods -A
+kubectl get pdb -A
+
+# backup etcd (static pod)
+ETCDCTL_API=3 etcdctl snapshot save /tmp/snap.db --endpoints=https://127.0.0.1:2379 --cacert=... --cert=... --key=...
+
+# control plane
+sudo apt-get update && sudo apt-get install -y kubeadm=<ver>-00
+sudo kubeadm upgrade plan
+sudo kubeadm upgrade apply v1.25.3 --yes
+sudo apt-get install -y kubelet=<ver>-00 kubectl=<ver>-00
+sudo systemctl daemon-reload && sudo systemctl restart kubelet
+
+# worker rolling upgrade
+kubectl cordon node-1
+kubectl drain node-1 --ignore-daemonsets --delete-local-data --grace-period=60 --timeout=10m
+# upgrade packages on node via SSH
+kubectl uncordon node-1
+
+# post checks
+kubectl get cs
+kubectl get pods -n kube-system
+kubectl get nodes
+```
+
+---
+
+## Post-upgrade validation & tests
+
+* `kubectl get nodes` (all Ready)
+* `kubectl get pods -A` (no CrashLoopBackOff/ErrImagePull)
+* Application smoke tests (HTTP health endpoints)
+* Monitor metrics (Prometheus), alerts, and logs
+
+---
+
+## Links & Further Reading (offline reminder)
+
+* kubeadm upgrade docs: kubeadm official docs (search `kubeadm upgrade apply`)
+* etcd snapshot & restore: etcdctl snapshot documentation
+* CNI vendor upgrade docs (Calico/Flannel/Weave)
+
+---
+
+## Appendix — Sample Automation (bash pseudo-script)
+
+> Run on a control-plane node for worker upgrades (or via Ansible)
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+TARGET_VERSION="v1.25.3"
+NODES=(node-1 node-2 node-3)
+for n in "${NODES[@]}"; do
+  echo "Upgrading $n"
+  kubectl cordon $n
+  kubectl drain $n --ignore-daemonsets --delete-local-data --grace-period=60 --timeout=10m
+  ssh ubuntu@$n "sudo apt-get update && sudo apt-get install -y kubeadm=${TARGET_VERSION#v}-00 kubelet=${TARGET_VERSION#v}-00 kubectl=${TARGET_VERSION#v}-00 && sudo systemctl daemon-reload && sudo systemctl restart kubelet"
+  kubectl uncordon $n
+  # quick validation
+  kubectl get nodes | grep $n
+done
+```
 
 ---
 
