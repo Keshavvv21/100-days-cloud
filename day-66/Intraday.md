@@ -14,8 +14,8 @@
 flowchart LR
   A[Prepare & Backup] --> B[Upgrade Control Plane Master-1]
   B --> C[Validate Control Plane]
-  C --> D[Upgrade other Control Plane nodes]
-  D --> E[Drain & Upgrade Worker Node (1..N)]
+  C --> D[Upgrade Other Control Plane Nodes]
+  D --> E[Drain & Upgrade Worker Node 1..N]
   E --> F[Upgrade kubelet & kube-proxy on Node]
   F --> G[Uncordon Node]
   G --> H[Validate Workloads]
