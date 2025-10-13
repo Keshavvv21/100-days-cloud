@@ -171,6 +171,4 @@ flowchart LR
 
 ---
 
-I can also create a **detailed visual diagram** (like a network-style architecture showing ExternalDNS, cert-manager, Kubernetes components, and DNS providers) if you want a ready-to-use image for presentations.
 
-Do you want me to create that diagram next?
