@@ -1,6 +1,4 @@
-## 🧭  CSI Secret Drivers**
 
-```markdown
 # 🔐 CSI Secret Drivers – Secure Secrets Management in Kubernetes
 
 ## 📘 Overview
